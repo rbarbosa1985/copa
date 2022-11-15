@@ -13,7 +13,7 @@ export async function poolRoutes(fastify: FastifyInstance) {
   })
 
 
-  fastify.post('/pools', async (request, reply) => {
+  fastify.post('/pools', { onRequest: [authenticate] }, async (request, reply) => {
     const getUser = z.object({
       sub: z.string(),
       name: z.string(),
@@ -26,6 +26,7 @@ export async function poolRoutes(fastify: FastifyInstance) {
       title: z.string(),
     })
     const { title } = createPoolBody.parse(request.body);
+
     const generate = new ShortUniqueId({ length: 6 });
     const code = String(generate()).toUpperCase();
 

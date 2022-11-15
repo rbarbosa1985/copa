@@ -10,7 +10,7 @@ import { authRoutes } from './routes/auth';
 
 async function bootstrap() {
   const fastify = Fastify({
-    logger: true,
+    // logger: true,
   })
 
   await fastify.register(cors, {
