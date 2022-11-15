@@ -47,6 +47,7 @@ model Game {
   date                  DateTime
   firstTeamCountryCode  String
   secondTeamCountryCode String
+  group                 String
   guesses               Guess[]
 }
 
