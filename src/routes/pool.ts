@@ -188,11 +188,11 @@ export async function poolRoutes(fastify: FastifyInstance) {
             id: true,
             user: {
               select: {
-                avatarUrl: true
+                avatarUrl: true,
+                name: true
               }
             }
           },
-          take: 4,
         },
         owner: {
           select: {
