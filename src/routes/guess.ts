@@ -12,6 +12,8 @@ export async function guessRoutes(fastify: FastifyInstance) {
   })
 
   fastify.post('/pools/:poolId/games/:gameId/guesses', { onRequest: [authenticate] }, async (request, reply) => {
+    let winner = 'EMP';
+
     const createGuessParams = z.object({
       poolId: z.string(),
       gameId: z.string(),
@@ -81,12 +83,19 @@ export async function guessRoutes(fastify: FastifyInstance) {
       })
     }
 
+    if (firstTeamPoints > secondTeamPoints) {
+      winner = game.firstTeamCountryCode
+    } else if (firstTeamPoints < secondTeamPoints) {
+      winner = game.secondTeamCountryCode
+    }
+
     await prisma.guess.create({
       data: {
         gameId,
         participantId: participant.id,
         firstTeamPoints,
         secondTeamPoints,
+	winner
       }
     })
 
