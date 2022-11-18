@@ -51,6 +51,7 @@ model Game {
   firstTeamPoints       Int      @default(0)
   secondTeamPoints      Int      @default(0)
   group                 String
+  winner		String	 @default("EMP")
   guesses               Guess[]
 }
 
