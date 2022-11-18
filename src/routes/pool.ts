@@ -186,10 +186,13 @@ export async function poolRoutes(fastify: FastifyInstance) {
         participants: {
           select: {
             id: true,
+            guesses: true,
+            points: true,
             user: {
               select: {
                 avatarUrl: true,
-                name: true
+                name: true,
+                email: true
               }
             }
           },
