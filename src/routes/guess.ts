@@ -95,11 +95,52 @@ export async function guessRoutes(fastify: FastifyInstance) {
         participantId: participant.id,
         firstTeamPoints,
         secondTeamPoints,
-	winner
+        winner
       }
     })
 
     return reply.status(201).send()
+  })
+
+  fastify.get('/guesses/:id', async (request) => {
+    const getPoolParams = z.object({
+      id: z.string()
+    })
+
+    const { id } = getPoolParams.parse(request.params);
+
+    const games = await prisma.guess.findMany({
+      where: {
+        participant: {
+          id: id
+        }
+      },
+      select: {
+        id: true,
+        firstTeamPoints: true,
+        secondTeamPoints: true,
+        winner: true,
+        game: {
+          select: {
+            id: true,
+            firstTeamCountryCode: true,
+            secondTeamCountryCode: true,
+            winner: true,
+            firstTeamPoints: true,
+            secondTeamPoints: true,
+            group: true,
+            date: true
+          }
+        }
+      },
+      orderBy: {
+        game: {
+          date: 'asc'
+        }
+      },
+    })
+
+    return { games };
   })
 
 }
